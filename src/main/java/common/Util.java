@@ -12,7 +12,7 @@ public class Util {
 
     private static final Logger LOG = LoggerFactory.getLogger(Util.class);
 
-    public static void readToArray(File file, ArrayList<Integer> arr1, ArrayList<Integer> arr2) {
+    public void readToArray(File file, ArrayList<Integer> arr1, ArrayList<Integer> arr2) {
 
         try {
             Scanner scanner = new Scanner(file);
@@ -31,11 +31,11 @@ public class Util {
         }
     }
 
-    public static File readFile(String fileName) {
+    public File readFile(String fileName) {
         return new File("/home/milood/Downloads/aoc/" + fileName + ".txt");
     }
 
-    private static int[] parseInts(String[] s) {
+    private int[] parseInts(String[] s) {
         int num1 = Integer.parseInt(s[0]);
         int num2 = Integer.parseInt(s[1]);
         return new int[]{num1, num2};
