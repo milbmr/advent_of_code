@@ -1,38 +1,32 @@
-package org.advent_of_code.dayone;
+package org.advent_of_code.year2024;
 
-import common.Util;
+import common.Aoc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.stream.IntStream;
 
-public class Main {
+public class Day1 extends Aoc {
 
-    private static final Logger LOG = LoggerFactory.getLogger(Main.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Day1.class);
 
-    private static final Util util = new Util();
+    public Day1() {
+        super(1);
+    }
 
     public static void main(String[] args) {
+        new Day1().printOUt();
+    }
 
-        ArrayList<Integer> arr1 = new ArrayList<>();
-        ArrayList<Integer> arr2 = new ArrayList<>();
+    private void printOUt() {
+        String[] arr = new String[]{"hi    you", "hi you", "hi  you"};
 
-        File file = util.readFile("aoc_day1");
-
-        util.readToArray(file, arr1, arr2);
-
-        int sum = sum(arr1, arr2);
-        LOG.info("distance between the lists: {}", sum);
-
-        ArrayList<Integer> occur = countOccurences(arr1, arr2);
-        int simScore = IntStream.range(0, arr1.size()).mapToObj(i -> arr1.get(i) * occur.get(i))
-                .mapToInt(Integer::intValue).sum();
-        LOG.info("Similarity between the lists: {}", simScore);
+        for (String s : arr) {
+            String[] split = s.split("\\s+");
+            LOG.info("a {}, b{}", split[0], split[1]);
+        }
     }
 
     private static ArrayList<Integer> countOccurences(ArrayList<Integer> arr1, ArrayList<Integer> arr2) {
