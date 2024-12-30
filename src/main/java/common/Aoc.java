@@ -47,15 +47,24 @@ public abstract class Aoc {
         return Arrays.stream(getDayInput().split(delimiter));
     }
 
-    private <T> T mapStream(String input, Class<T> container) {
-        List<Object> mapped = new ArrayList<>();
-
-        int[] mapArray = parseInt(input);
-        return (T) Arrays.stream(s)
+    protected <T> List<T> parseInput(Class<T> cont) {
+        return getArray().filter(s -> !s.isBlank()).map(s -> mapStream(s, cont)).toList();
     }
 
-    private int[] parseInt(String input) {
-        return Arrays.stream(input.split(DEFAULT_DELIMITER)).mapToInt(Integer::parseInt).toArray();
+    @SuppressWarnings("unchecked")
+    private <T> T mapStream(String input, Class<T> container) {
+        Object[] mapArray = parseInt(input);
+
+        try {
+            return (T) container.getConstructors()[0].newInstance(mapArray);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private Object[] parseInt(String input) {
+        return Arrays.stream(input.split(DEFAULT_DELIMITER)).map(i -> (Object) Integer.parseInt(i)).toArray();
     }
 }
 

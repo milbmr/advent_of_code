@@ -6,11 +6,14 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public class Day1 extends Aoc {
 
     private static final Logger LOG = LoggerFactory.getLogger(Day1.class);
+
+    public record Pair(int a, int b) {}
 
     public Day1() {
         super(1);
@@ -21,11 +24,10 @@ public class Day1 extends Aoc {
     }
 
     private void printOUt() {
-        String[] arr = new String[]{"hi    you", "hi you", "hi  you"};
+        List<Pair> pairArray = parseInput(Pair.class);
 
-        for (String s : arr) {
-            String[] split = s.split("\\s+");
-            LOG.info("a {}, b{}", split[0], split[1]);
+        for (Pair pair : pairArray) {
+            LOG.info(pair.a + " -> " + pair.b);
         }
     }
 
