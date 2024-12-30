@@ -4,10 +4,11 @@ import common.Aoc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.IntStream;
+
+import static java.util.stream.Collectors.*;
 
 public class Day1 extends Aoc {
 
@@ -20,44 +21,46 @@ public class Day1 extends Aoc {
     }
 
     public static void main(String[] args) {
-        new Day1().printOUt();
+        new Day1().printOutput();
     }
 
-    private void printOUt() {
-        List<Pair> pairArray = parseInput(Pair.class);
+    @Override
+    public void printOutput() {
+        int totalDistance = part1();
+        LOG.info("total distance: {}", totalDistance);
 
-        for (Pair pair : pairArray) {
-            LOG.info(pair.a + " -> " + pair.b);
-        }
+        int similarityScore = part2();
+        LOG.info("similarity score: {}", similarityScore);
     }
 
-    private static ArrayList<Integer> countOccurences(ArrayList<Integer> arr1, ArrayList<Integer> arr2) {
-        ArrayList<Integer> result = new ArrayList<>();
+    @Override
+    public int part1() {
+        List<Pair> pairs = parseInput(Pair.class);
 
-        for (Integer integer : arr1) {
-            int count = 0;
-            for (Integer value : arr2) {
-                if (Objects.equals(integer, value)) {
-                    count++;
-                }
-            }
-            result.add(count);
-        }
+        List<Integer> leftList = pairs.stream().map(Pair::a).sorted().toList();
+        List<Integer> rightList = pairs.stream().map(Pair::b).sorted().toList();
 
-        return result;
+        return totalDistance(leftList, rightList);
     }
 
-    private static int sum(ArrayList<Integer> arr1, ArrayList<Integer> arr2) {
-        int sum = 0;
-        Collections.sort(arr1);
-        Collections.sort(arr2);
+    @Override
+    public int part2() {
+        List<Pair> pairs = parseInput(Pair.class);
 
-        for (int i = 0; i < arr1.size(); i++) {
-            int tokensSum = Math.abs(arr1.get(i) - arr2.get(i));
-            sum += tokensSum;
-        }
+        List<Integer> leftList = pairs.stream().map(Pair::a).toList();
+        List<Integer> rightList = pairs.stream().map(Pair::b).toList();
 
-        return sum;
+        return similarityScore(leftList, rightList);
+    }
+
+    private Integer similarityScore(List<Integer> leftList, List<Integer> rightList) {
+        Map<Integer, Integer> map = rightList.stream().collect(groupingBy(Function.identity(), collectingAndThen(counting(), Long::intValue)));
+
+        return leftList.stream().mapToInt(i -> i * map.getOrDefault(i, 0)).sum();
+    }
+
+    private int totalDistance(List<Integer> leftList, List<Integer> rightList) {
+        return IntStream.range(0, leftList.size()).map(i -> Math.abs(leftList.get(i) - rightList.get(i))).sum();
     }
 
 }
