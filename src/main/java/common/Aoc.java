@@ -47,10 +47,10 @@ public abstract class Aoc {
         return Arrays.stream(getDayInput().split(delimiter));
     }
 
+    public abstract void printOutput();
+
     public abstract int part1();
     public abstract int part2();
-
-    public abstract void printOutput();
 
     protected <T> List<T> parseInput(Class<T> cont) {
         return getArray().filter(s -> !s.isBlank()).map(s -> mapStream(s, cont)).toList();
