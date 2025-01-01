@@ -32,7 +32,7 @@ public abstract class Aoc {
     }
 
     private File getFile(String path) {
-        return new File("src/main/resources/" + path);
+        return new File("src/main/resources/days/" + path);
     }
 
     private String getDayInput() {
