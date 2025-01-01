@@ -39,6 +39,24 @@ public abstract class Aoc {
         return getResource(getDayPath());
     }
 
+    protected String[] getInput(String input) {
+        return input.split(DEFAULT_DELIMITER);
+    }
+
+    protected String[] getInput(String input, String delimiter) {
+        return input.split(delimiter);
+    }
+
+    protected String removeElement(String[] old, int n) {
+        String[] newArray = new String[old.length - 1];
+
+        for (int i = 0, k = 0; i < old.length; i++) {
+            if (i == n) continue;
+            newArray[k++] = old[i];
+        }
+        return String.join(" ", newArray);
+    }
+
     protected Stream<String> getArray() {
         return getArray("\n");
     }

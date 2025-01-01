@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Day2 extends Aoc {
 
@@ -21,23 +22,22 @@ public class Day2 extends Aoc {
 
     @Override
     public void printOutput() {
-        int safeReports = part1();
-        LOG.info("Safe reports: {}", safeReports);
+        int safeReport= part2();
+        LOG.info("Safe reports: {}", safeReport);
     }
 
     @Override
     public int part1() {
-        return getArray().map(this::isSafe).filter(Boolean::booleanValue).toList().size();
+        return (int) getArray().filter(this::isSafe).count();
     }
 
     @Override
     public int part2() {
-        return 0;
+        return (int) getArray().filter(this::isUnsafeSafe).count();
     }
 
     private boolean isSafe(String input) {
-        String[] tokens = input.split(" ");
-        boolean isAscending = true;
+        String[] tokens = getInput(input);
 
         for (int i = 0; i < tokens.length - 1 ; i++) {
             int diff = Integer.parseInt(tokens[i]) - Integer.parseInt(tokens[i + 1]);
@@ -47,5 +47,19 @@ public class Day2 extends Aoc {
             }
         }
         return true;
+    }
+
+    private boolean isUnsafeSafe(String input) {
+        if (isSafe(input)) {
+            return true;
+        }
+
+        String[] tokens = getInput(input);
+        for (int i = 0; i < tokens.length ; i++) {
+            if (isSafe(removeElement(tokens, i))) {
+                return true;
+            };
+        }
+        return false;
     }
 }
