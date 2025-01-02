@@ -1,7 +1,8 @@
 # Advent Of Code
 This repository contains my Java solutions for the [Advent of Code](https://adventofcode.com).
 
-*have fun*
+*Have fun*
+
 
 ![build](https://github.com/bqcuong/AdventOfCode/actions/workflows/maven.yml/badge.svg)
 
