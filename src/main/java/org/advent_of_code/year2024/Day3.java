@@ -28,8 +28,11 @@ public class Day3 extends Aoc {
 
     @Override
     public void printOutput() {
-        int count = part1();
-        LOG.info("Part 1: {}", count);
+        int mul = part1();
+        LOG.info("multiplications: {}", mul);
+
+        int allMul = part2();
+        LOG.info("filtered multiplications: {}", allMul);
     }
 
     @Override
@@ -41,7 +44,12 @@ public class Day3 extends Aoc {
 
     @Override
     public int part2() {
-        return 0;
+        return Arrays.stream(filterInstruction()).map(this::findNumMatch)
+                .map(i -> mapStream(i, Pair.class, ",")).mapToInt(p -> p.a() * p.b()).sum();
+    }
+
+    private List<String> findInstructionMatch(String input) {
+        return matchPattern(input, "mul\\((\\d+),(\\d+)\\)|do\\(\\)|don't\\(\\)");
     }
 
     private List<String> findMulMatch(String input) {
@@ -50,5 +58,21 @@ public class Day3 extends Aoc {
 
     private String findNumMatch(String input) {
         return matchString(input, "(\\d+),(\\d+)");
+    }
+
+    private String[] filterInstruction() {
+        List<String> matches = Arrays.stream(getArray()
+                .map(this::findInstructionMatch).flatMap(List::stream).toArray(String[]::new)).toList();
+        List<String> filtered = new ArrayList<>();
+
+        boolean isDo = true;
+        for (String match : matches) {
+            isDo = match.equals("do()") || !match.equals("don't()") && isDo;
+
+            if (match.contains("mul") && isDo) {
+                filtered.add(match);
+            }
+        }
+        return filtered.toArray(String[]::new);
     }
 }
