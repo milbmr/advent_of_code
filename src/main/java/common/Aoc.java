@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -37,7 +38,7 @@ public abstract class Aoc {
         return new File("src/main/resources/days/" + path);
     }
 
-    private String getDayInput() {
+    protected String getDayInput() {
         return getResource(getDayPath());
     }
 
@@ -96,20 +97,11 @@ public abstract class Aoc {
         return Arrays.stream(input.split(DEFAULT_DELIMITER)).map(i -> (Object) Integer.parseInt(i)).toArray();
     }
 
-    protected String matchString(String input, String pattern) {
+    protected Stream<MatchResult> matchPattern(String input, String pattern) {
         Pattern pat = Pattern.compile(pattern);
         Matcher matcher = pat.matcher(input);
-        return matcher.find() ? matcher.group() : input;
-    }
 
-    protected List<String> matchPattern(String input, String pattern) {
-        Pattern pat = Pattern.compile(pattern);
-        Matcher matcher = pat.matcher(input);
-        List<String> result = new ArrayList<>();
-        while (matcher.find()) {
-            result.add(matcher.group());
-        }
-        return result;
+        return matcher.results();
     }
 }
 
