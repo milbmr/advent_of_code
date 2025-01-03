@@ -19,23 +19,24 @@ public class Day3 extends Aoc {
         super(3);
     }
 
+    public record Pair(int a, int b) {
+    }
+
     public static void main(String[] args) {
-        new Day3().part1();
+        new Day3().printOutput();
     }
 
     @Override
     public void printOutput() {
-
+        int count = part1();
+        LOG.info("Part 1: {}", count);
     }
 
     @Override
     public int part1() {
-        List<String> matches = Arrays.stream(getArray()
-                .map(this::findMulMatch).flatMap(List::stream).toArray(String[]::new)).map(this::findNumMatch).toList();
-        for (String match : matches) {
-            LOG.info("Found number of matches: {}", match);
-        }
-        return 0;
+        return Arrays.stream(getArray()
+                        .map(this::findMulMatch).flatMap(List::stream).toArray(String[]::new))
+                .map(this::findNumMatch).map(i -> mapStream(i, Pair.class, ",")).mapToInt(p -> p.a() * p.b()).sum();
     }
 
     @Override

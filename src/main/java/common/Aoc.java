@@ -73,12 +73,12 @@ public abstract class Aoc {
     public abstract int part2();
 
     protected <T> List<T> parseInput(Class<T> cont) {
-        return getArray().filter(s -> !s.isBlank()).map(s -> mapStream(s, cont)).toList();
+        return getArray().filter(s -> !s.isBlank()).map(s -> mapStream(s, cont, DEFAULT_DELIMITER)).toList();
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T mapStream(String input, Class<T> container) {
-        Object[] mapArray = parseInt(input);
+    protected  <T> T mapStream(String input, Class<T> container, String delimiter) {
+        Object[] mapArray = parseInt(input, delimiter);
 
         try {
             return (T) container.getConstructors()[0].newInstance(mapArray);
@@ -86,6 +86,10 @@ public abstract class Aoc {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private Object[] parseInt(String input, String delimiter) {
+        return Arrays.stream(input.split(delimiter)).map(i -> (Object) Integer.parseInt(i)).toArray();
     }
 
     private Object[] parseInt(String input) {
